@@ -14,14 +14,6 @@ public class HelloPushConsumer {
         // 确保MQ中有该队列，如果没有则创建
         channel.queueDeclare("queue.biz", false, false, true, null);
 
-
-        DeliverCallback callback = new DeliverCallback() {
-            @Override
-            public void handle(String consumerTag, Delivery message) throws IOException {
-
-            }
-
-        };
         // 监听消息，一旦有消息推送过来，就调用第一个lambda表达式
         channel.basicConsume("queue.biz", (consumerTag, message) -> {
             System.out.println(new String(message.getBody()));
