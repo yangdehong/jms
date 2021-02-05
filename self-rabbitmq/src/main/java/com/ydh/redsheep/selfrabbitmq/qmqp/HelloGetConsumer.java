@@ -8,6 +8,11 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.TimeoutException;
 
+/**
+* 拉的模式
+* @author : yangdehong
+* @date : 2021/2/5 13:48
+*/
 public class HelloGetConsumer {
     public static void main(String[] args) throws NoSuchAlgorithmException, KeyManagementException, URISyntaxException, IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();

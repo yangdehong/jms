@@ -3,7 +3,11 @@ package com.ydh.redsheep.selfrabbitmq.qmqp;
 import com.rabbitmq.client.*;
 
 import java.io.IOException;
-
+/**
+* 推的模式
+* @author : yangdehong
+* @date : 2021/2/5 13:48
+*/
 public class HelloPushConsumer {
     public static void main(String[] args) throws Exception {
         ConnectionFactory factory = new ConnectionFactory();
