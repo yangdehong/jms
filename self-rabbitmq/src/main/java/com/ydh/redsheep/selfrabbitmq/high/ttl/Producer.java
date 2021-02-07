@@ -20,35 +20,23 @@ public class Producer {
              final Channel channel = connection.createChannel()) {
 
             Map<String, Object> arguments = new HashMap<>();
-//            消息队列中消息过期时间，30s
+//            消息队列中消息过期时间，10s
             arguments.put("x-message-ttl", 10 * 1000);
-//            如果消息队列没有消费者，则10s后消息过期，消息队列也删除
-//            arguments.put("x-expires", 10 * 1000);
-            arguments.put("x-expires", 60 * 1000);
+//            如果消息队列没有消费者，则60s后消息过期，消息队列也删除
+            arguments.put("x-expires", 30 * 1000);
 
-            channel.queueDeclare("queue.ttl.waiting",
-                    true,
-                    false,
-                    false,
-                    arguments);
+            channel.queueDeclare("queue.ttl", true, false, false, arguments);
 
-            channel.exchangeDeclare("ex.ttl.waiting",
-                    "direct",
-                    true,
-                    false,
-                    null);
+            channel.exchangeDeclare("ex.ttl", "direct", true, false, null);
 
-            channel.queueBind("queue.ttl.waiting", "ex.ttl.waiting", "key.ttl.waiting");
+            channel.queueBind("queue.ttl", "ex.ttl", "key.ttl");
 
-            final AMQP.BasicProperties properties = new AMQP.BasicProperties.Builder()
-                    .contentEncoding("utf-8")
-                    .deliveryMode(2)   // 持久化的消息
-                    .build();
+//            final AMQP.BasicProperties properties = new AMQP.BasicProperties.Builder()
+//                    .contentEncoding("utf-8")
+//                    .deliveryMode(2)   // 持久化的消息
+//                    .build();
 
-            channel.basicPublish("ex.ttl.waiting",
-                    "key.ttl.waiting",
-                    null,
-                    "等待的订单号".getBytes("utf-8"));
+            channel.basicPublish("ex.ttl", "key.ttl", null, "等待的订单号".getBytes("utf-8"));
 
 
         } catch (Exception ex) {
