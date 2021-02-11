@@ -1,9 +1,6 @@
 package com.ydh.redsheep.selfkafka.simple.producer;
 
-import org.apache.kafka.clients.producer.Callback;
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.clients.producer.RecordMetadata;
+import org.apache.kafka.clients.producer.*;
 import org.apache.kafka.common.header.Header;
 import org.apache.kafka.common.header.internals.RecordHeader;
 import org.apache.kafka.common.serialization.IntegerSerializer;
@@ -21,6 +18,7 @@ public class MyProducer1 {
 
         Map<String, Object> configs = new HashMap<>();
         // 指定初始连接用到的broker地址
+//        ProducerConfig.BOOTSTRAP_SERVERS_CONFIG，建议使用ProducerConfig的配置
         configs.put("bootstrap.servers", "172.16.131.16:9092");
         // 指定key的序列化类
         configs.put("key.serializer", IntegerSerializer.class);
