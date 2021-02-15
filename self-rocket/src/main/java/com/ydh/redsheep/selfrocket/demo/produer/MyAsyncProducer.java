@@ -12,11 +12,14 @@ import java.io.UnsupportedEncodingException;
 public class MyAsyncProducer {
     public static void main(String[] args) throws MQClientException, UnsupportedEncodingException, RemotingException, InterruptedException {
         // 实例化生产者，并指定生产组名称
-        DefaultMQProducer producer = new DefaultMQProducer("producer_grp_01");
-
+        DefaultMQProducer producer = new DefaultMQProducer("producer_grp_02");
+        // 设置实例名称。一个JVM中如果有多个生产者，可以通过实例名称区分
+        // 默认DEFAULT
+        producer.setInstanceName("producer_grp_02");
         // 指定nameserver的地址
         producer.setNamesrvAddr("172.16.131.16:9876");
-
+        // 设置异步发送的重试次数
+        producer.setRetryTimesWhenSendAsyncFailed(2);
         // 初始化生产者
         producer.start();
 
@@ -29,10 +32,13 @@ public class MyAsyncProducer {
             producer.send(message, new SendCallback() {
                 @Override
                 public void onSuccess(SendResult sendResult) {
+                    // 发送成功的处理逻辑
                     System.out.println("发送成功:" + sendResult);
                 }
                 @Override
                 public void onException(Throwable throwable) {
+                    // 发送失败的处理逻辑
+                    // 重试次数耗尽，发生的异常
                     System.out.println("发送失败：" + throwable.getMessage());
                 }
             }, 60000);

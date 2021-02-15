@@ -7,6 +7,7 @@ import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.apache.rocketmq.common.message.MessageQueue;
+import org.apache.rocketmq.common.protocol.heartbeat.MessageModel;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -19,12 +20,20 @@ public class MyPushConsumer {
 
         // 实例化推送消息消费者的对象，同时指定消费组名称
         DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("consumer_grp_02");
-
+        // 消费的模式：集群
+        consumer.setMessageModel(MessageModel.CLUSTERING);
+        // 消费的模式：广播
+        consumer.setMessageModel(MessageModel.BROADCASTING);
+        // 设置消费者的线程数
+        consumer.setConsumeThreadMin(1);
+        consumer.setConsumeThreadMax(10);
         // 指定nameserver的地址
         consumer.setNamesrvAddr("172.16.131.16:9876");
 
         // 订阅主题
         consumer.subscribe("tp_demo_02", "*");
+        // 设置消息批处理的一个批次中消息的最大个数
+        consumer.setConsumeMessageBatchMaxSize(10);
 
         // 添加消息监听器，一旦有消息推送过来，就进行消费
         consumer.setMessageListener(new MessageListenerConcurrently() {

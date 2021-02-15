@@ -6,6 +6,7 @@ import org.apache.rocketmq.client.exception.MQBrokerException;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.apache.rocketmq.common.message.MessageQueue;
+import org.apache.rocketmq.common.protocol.heartbeat.MessageModel;
 import org.apache.rocketmq.remoting.exception.RemotingException;
 
 import java.io.UnsupportedEncodingException;
@@ -19,6 +20,10 @@ public class MyPullConsumer {
     public static void main(String[] args) throws MQClientException, RemotingException, InterruptedException, MQBrokerException, UnsupportedEncodingException {
         // 拉取消息的消费者实例化，同时指定消费组名称
         DefaultMQPullConsumer consumer = new DefaultMQPullConsumer("consumer_grp_01");
+        // 消费的模式：集群
+        consumer.setMessageModel(MessageModel.CLUSTERING);
+        // 消费的模式：广播
+        consumer.setMessageModel(MessageModel.BROADCASTING);
         // 设置nameserver的地址
         consumer.setNamesrvAddr("172.16.131.16:9876");
 
